@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { SpellingCenter } from './components/SpellingCenter'
 import { WordTrail } from './components/WordTrail'
 import './styles.css'
+import './spelling.css'
 
 type HomeView = 'home' | 'word-trail' | 'spelling'
 
