@@ -2,7 +2,9 @@ export function shuffleWords(words: string[]): string[] {
   const copy = [...words]
   for (let i = copy.length - 1; i > 0; i -= 1) {
     const j = Math.floor(Math.random() * (i + 1))
-    ;[copy[i], copy[j]] = [copy[j], copy[i]]
+    const current = copy[i]
+    copy[i] = copy[j]
+    copy[j] = current
   }
   return copy
 }
