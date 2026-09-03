@@ -27,6 +27,7 @@ export function useGameSession() {
   const [solutions, setSolutions] = useState<string[]>([])
   const countdownTimer = useRef<number | undefined>()
 
+  const isTimedGame = secondsRemaining !== null
   const currentWord = useMemo(() => pathToWord(board, path), [board, path])
   const score = useMemo(() => submitted.reduce((sum, item) => sum + item.score, 0), [submitted])
   const foundWords = useMemo(() => new Set(submitted.map((item) => item.word)), [submitted])
@@ -62,18 +63,22 @@ export function useGameSession() {
   }, [])
 
   useEffect(() => {
-    if (status !== 'playing' || secondsRemaining == null) return
+    if (status !== 'playing' || !isTimedGame) return
 
     const id = window.setInterval(() => {
       setSecondsRemaining((value) => (value == null ? null : Math.max(0, value - 1)))
     }, 1000)
 
     return () => window.clearInterval(id)
-  }, [status, secondsRemaining == null])
+  }, [status, isTimedGame])
 
   useEffect(() => {
     if (status === 'playing' && secondsRemaining === 0) finish()
   }, [status, secondsRemaining, finish])
+
+  useEffect(() => {
+    return () => window.clearInterval(countdownTimer.current)
+  }, [])
 
   useEffect(() => {
     if (status !== 'finished') return
